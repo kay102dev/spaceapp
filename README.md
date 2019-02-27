@@ -12,7 +12,7 @@ Navigate to [http://www.greymeta-it.co.za/spaceapp.](http://www.greymeta-it.co.z
 
 
 #### To find the shortest path from a single vertex to every other vertex in the graph
-The apps mandate is to find the shortest path(minimum cost) from source to a node. In this context, from origin planet to destination planet. The application applies the Dijkstra's algorithm to accomplish this and thereafter projects the results onto a graph visualisation library called [Cytoscape](http://js.cytoscape.org/#introduction).
+The applications mandate is to find the shortest path(minimum cost) from source to a node. In this context, from origin planet to destination planet. The application applies the Dijkstra's algorithm to accomplish this and thereafter projects the results onto a graph visualisation library called [Cytoscape](http://js.cytoscape.org/#introduction).
 
 ## Choosing a virtualisation graph library
 There are plenty of graph libraries available, advantages of the Cytoscape library is that it includes graph theory algorithms and most importantly, the Breadth First Search. Which is an algorithm for traversing, or searching tree, or graph data structures. It also offers mobile support which is very crucial for Frontend. 
