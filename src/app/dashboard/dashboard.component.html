@@ -1,0 +1,166 @@
+<div class="ani" [@enterAnimation]="exp">
+    <div class="container dashboard-container">
+        <div class="row">
+            <div *ngIf="!adminRole()" class="user-notification">
+                Hello {{this.authService.authState.user.email}}, to load new Planet Data onto Space Shuttle, please log
+                in
+                as Administrator
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6" style="border-right: #ea0057 solid 1px;">
+                <div style="width: 100%; margin: 0px auto;">
+
+                    <section [ngClass]="!adminRole() ? 'disable-file-upload-section' : ''">
+                        <h2>Load Inter-planetary routes onto Ship hard drive {{title}}</h2>
+                        <div class="file-msg-wrapper" style="border-bottom: #fff solid 1px;">
+                            <div class="file-upload">
+                                <div class="file-select">
+                                    <div class="file-select-button" id="fileName">Choose File</div>
+                                    <div class="file-select-name" id="noFile">No file chosen...</div>
+                                    <input type="file" (change)="selectExcelFile($event)" name="chooseFile"
+                                           id="chooseFile">
+                                </div>
+                            </div>
+                            <p *ngIf="incorrectFileType" class="filetype">Please upload correct file type, only excel files allowed.</p>
+                            <div *ngIf="showMessage">
+                                <p class="ellipsis-animate">{{appStateText}}</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <form #dijkstraForm="ngForm">
+                            <div class="split pull-left">
+                                <label for="startNode" class="float-label label">Starting Node *</label>
+                                <select class="form-control"
+                                        id="startNode"
+                                        name="startNode"
+                                        ngModel required
+                                        #startingnode="ngModel"
+                                        [(ngModel)]="startNodeValue">
+                                    <option [value]="starting" selected disabled> Select Origin Planet
+                                    </option>
+                                    <option [value]="planet['Planet Node']"
+                                            *ngFor="let planet of this.planetNamesArr; let i = index;">
+                                        {{ planet['Planet Name'] }} -> {{ planet['Planet Node'] }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="split pull-right">
+                                <label for="finishNodeInput" class="float-label label">Finishing Node *</label>
+                                <select class="form-control"
+                                        id="finishNodeInput"
+                                        name="finishNode"
+                                        ngModel required
+                                        #finishnode="ngModel"
+                                        [(ngModel)]="endNodeValue"
+                                        (ngModelChange)="endNodeValue=$event.toUpperCase()">
+                                    <option [value]="destination" selected disabled>Select Destination Planet
+                                    </option>
+                                    <option [value]="planet['Planet Node']"
+                                            *ngFor="let planet of this.planetNamesArr; let i = index;">
+                                        {{ planet['Planet Name'] }} -> {{ planet['Planet Node'] }}
+                                    </option>
+
+                                </select>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br>
+                            <div *ngIf="showtrafficCheckBox"  class="custom-control-wrapper">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" name="traffic" class="custom-control-input"
+                                           id="defaultChecked2" (change)="onAddingTraffic($event)">
+                                    <label class="custom-control-label" for="defaultChecked2">Find shortest route with
+                                        Traffic</label>
+                                </div>
+                            </div>
+                            <button type="button" (click)="getShortestPath()" class="find_btn">Find shortest Travel
+                                Distance
+                            </button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6 cy-wrapper">
+                <h2>BFS Graph using graph visualization library</h2>
+                <ng2-cytoscape
+                               [planetRoutesJson]="planetRoutesJson"
+                               [planetRoutesArr]="planetRoutesArr"
+                               [planetNamesArr]="planetNamesArr"
+                               [resultsData]="resultsData"
+                               [resultsWithTrafficData]="resultsWithTrafficData"
+                ></ng2-cytoscape>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="info-wrapper">
+                <!-- Travel Routes without Traffic-->
+                <section *ngIf="!showDistanceTextWithTraffic" class="nonTraffic">
+                    <div *ngIf="showDistanceText" class="animate">
+                        <h3>This shuttle will travel the following planets: No traffic</h3>
+                        <div>
+                            <p class="">The Distance from <span>{{originPlanetName}}</span> to <span>{{destinationPlanetName}}</span>
+                                is <span>{{distance | number : '1.2-2'}} trillion km,</span>Therefore
+                                it will take you <span>{{CalculateHowMuchTime | number : '1.2-2' }}</span> hours when
+                                travelling at
+                                <span>{{passengerTravelSpeed | billion }}</span></p>
+                        </div>
+                        <ul class="stepper">
+                            <li *ngFor="let node of planetNamesFromPlanetNodes; let i = index;"
+                                [ngClass]="i===activateIndex?'progress-points stepper-item active':'progress-points stepper-item'">
+                                <div class="container">
+      <span class="stepper-point item">
+      <img src="./assets/img/earth-flat.png"/>
+      </span>
+                                    <div class="circle" style="animation-delay: -3s"></div>
+                                    <div class="circle" style="animation-delay: -2s"></div>
+                                    <div class="circle" style="animation-delay: -1s"></div>
+                                    <div class="circle" style="animation-delay: -0s"></div>
+                                    <span class="stepper-label">{{node}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Travel Routes with Traffic-->
+                <section class="Traffic">
+                    <div *ngIf="showDistanceTextWithTraffic" class="animate">
+                        <h3>This shuttle will travel the following planets: Heavy traffic</h3>
+                        <div *ngIf="this.planetNamesFromPlanetNodesWithTraffic">
+                            <div class="">
+                                <p class="">
+                                    The Distance from
+                                    <span>{{originPlanetNameWithTraffic}}</span>
+                                    to
+                                    <span>{{destinationPlanetNameWithTraffic}}</span>
+                                    is
+                                    <span>{{distanceWithTraffic | number : '1.2-2'}} trillion km,</span>
+                                    Therefore it will take you
+                                    <span>{{CalculateHowMuchTimeWithTraffic | number : '1.2-2' }}</span>
+                                    hours when travelling at
+                                    <span>{{passengerTravelSpeed | billion }}</span></p>
+                            </div>
+                        </div>
+                        <ul class="stepper">
+                            <li *ngFor="let node of planetNamesFromPlanetNodesWithTraffic; let i = index;"
+                                [ngClass]="i === activateIndex?'progress-points stepper-item active':'progress-points stepper-item'">
+                                <div class="container">
+      <span class="stepper-point item">
+      <img src="./assets/img/earth-flat.png"/>
+      </span>
+                                    <div class="circle" style="animation-delay: -3s"></div>
+                                    <div class="circle" style="animation-delay: -2s"></div>
+                                    <div class="circle" style="animation-delay: -1s"></div>
+                                    <div class="circle" style="animation-delay: -0s"></div>
+                                    <span class="stepper-label">{{node}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

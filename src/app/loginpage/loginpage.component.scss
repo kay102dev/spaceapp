@@ -1,0 +1,67 @@
+.login_btn {
+  width: calc(100% - 30px);
+  margin-top: 20px;
+  background: #21438c;
+  border: none;
+  padding: 19px 16px;
+  font-size: 14px;
+  color: #fff;
+  border: #2b2325 solid 1px;
+}
+
+#myapp {
+  text-align: center;
+  margin: auto;
+  margin-top: 12%;
+  label {
+    display: block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    margin-top: 43px;
+    float: left;
+  }
+}
+
+#myapp input {
+  width: 100%;
+  padding: 12px 14px 12px 14px;
+  background: #20438c63;
+  border: none;
+  color: #ffffff;
+  border-bottom: #5e628e solid 1px;
+}
+
+left-input {
+  float: left;
+}
+
+right-input {
+  float: right;
+}
+
+.title {
+  float: left;
+  display: block;
+  width: 100%;
+  float: left;
+  padding: 28px 0px;
+}
+
+.text {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 0px;
+  text-align: center;
+}
+
+.error {
+  color: #ff1414;
+  font-size: 14px;
+  text-align: center;
+
+}
+
+
+

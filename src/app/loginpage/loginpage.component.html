@@ -1,0 +1,31 @@
+<div class="container" id="myapp">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h2 style="float: left;" class="title">INTERPLANETARY TOURS RESERVATION DESK</h2>
+            <p class="text">Please validate your ticket in order to board the Space travel Tours. Instructions by the
+                The Intergalactic Travel Bureau.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <label for="">Account name</label>
+                <input type="email" placeholder="email" [(ngModel)]="usercreds.email" class="left-input">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <label for="">Ticket Number</label>
+                <input type="password" placeholder="password" [(ngModel)]="usercreds.password" class="right-input">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" style="margin-top: 50px;">
+            <button (click)="login()" class="login_btn">Board Flight</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                <p [ngClass]="showError ? 'error':''" class="text">{{errorMessage}}</p>
+        </div>
+    </div>
+</div>
