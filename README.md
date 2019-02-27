@@ -42,9 +42,10 @@ We use Firebase to generate our RESTful service. This technology platform allows
 
 #### The logic is as following:
 
+##### NOTE: You need to login as admin in order to gain access to the upload file UI control and be able to upload excel file data
 
 1. Read the excel sheet from local machine to [firebase storage](https://firebase.google.com/docs/storage/) which is our "CDN" 
- 1.1   ##### NOTE: You need to login as admin in order to gain access to the upload file UI control and be able to upload excel file ata
+
 
 2. Within the excel file sheets sitting in our "CDN", convert each sheet to JSON files via [Firebase cloud functions](https://firebase.google.com/docs/functions/)
 3. From client-side, call Restful service to fetch and store the newly created excel JSON files (Planet Names, Routes, and Traffic) into [Firebase Firestore](https://firebase.google.com/docs/firestore/) Documents (NOSQL Realtime cloud Database)
